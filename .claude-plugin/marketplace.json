@@ -15,7 +15,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/toombsday/claude-trim.git",
-        "sha": "8d4fe5bb80adc9d08e7fc41c78f0bfcdec31d5ae"
+        "sha": "196f449939163bc261161d3149687c8e8b5f8d25"
       },
       "homepage": "https://github.com/toombsday/claude-trim"
     }

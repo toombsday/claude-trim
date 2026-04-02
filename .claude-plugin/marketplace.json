@@ -1,0 +1,23 @@
+{
+  "name": "toombsday-claude-trim",
+  "metadata": {
+    "description": "claude-trim: strips trailing whitespace from files Claude writes and cleans TUI clipboard output"
+  },
+  "owner": {
+    "name": "toombsday",
+    "url": "https://github.com/toombsday"
+  },
+  "plugins": [
+    {
+      "name": "claude-trim",
+      "description": "Automatically strips trailing whitespace from files Claude Code writes, and provides a /trim command to clean clipboard or piped TUI output of trailing spaces and ANSI artifacts.",
+      "category": "productivity",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/toombsday/claude-trim.git",
+        "sha": "1f5650adef9351e192be3c9580067bab4cec01c6"
+      },
+      "homepage": "https://github.com/toombsday/claude-trim"
+    }
+  ]
+}

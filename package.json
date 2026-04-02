@@ -1,0 +1,44 @@
+{
+  "name": "claude-trim",
+  "version": "1.0.0",
+  "description": "Claude Code plugin: strips trailing whitespace from written files and cleans TUI output of ANSI padding artifacts",
+  "keywords": [
+    "claude-code",
+    "claude-code-plugin",
+    "whitespace",
+    "trim",
+    "clipboard",
+    "ansi",
+    "formatting",
+    "hooks"
+  ],
+  "homepage": "https://github.com/yourusername/claude-trim#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/claude-trim/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/claude-trim.git"
+  },
+  "license": "MIT",
+  "author": "Your Name <you@example.com>",
+  "files": [
+    ".claude-plugin/",
+    "hooks/",
+    "commands/",
+    "scripts/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "chmod +x scripts/*.sh",
+    "test": "bash test/run.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "claude-code": {
+    "plugin": true,
+    "minClaudeCodeVersion": "1.0.0"
+  }
+}

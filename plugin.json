@@ -1,0 +1,15 @@
+{
+  "name": "claude-trim",
+  "version": "1.0.0",
+  "description": "Automatically strips trailing whitespace from files Claude Code writes, and provides a /trim command to clean clipboard or piped text of trailing spaces and ANSI artifacts — a workaround for the Ink renderer whitespace padding bug.",
+  "author": {
+    "name": "Your Name",
+    "email": "you@example.com",
+    "url": "https://github.com/yourusername"
+  },
+  "homepage": "https://github.com/yourusername/claude-trim",
+  "repository": "https://github.com/yourusername/claude-trim",
+  "license": "MIT",
+  "keywords": ["whitespace", "trim", "clipboard", "copy-paste", "formatting", "hooks"],
+  "hooks": "./hooks/hooks.json"
+}

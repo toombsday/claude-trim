@@ -1,6 +1,6 @@
 {
   "name": "claude-trim",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code plugin: strips trailing whitespace from written files and cleans TUI output of ANSI padding artifacts",
   "keywords": [
     "claude-code",

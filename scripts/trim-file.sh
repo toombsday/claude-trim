@@ -41,6 +41,7 @@ esac
 # ── Process each file ────────────────────────────────────────────────────────
 TRIMMED=0
 SKIPPED=0
+CHECKED=0
 
 trim_file() {
   local file="$1"
@@ -71,6 +72,13 @@ trim_file() {
     return
   fi
 
+  ((CHECKED++)) || true
+
+  # Only run sed if the file actually has trailing whitespace
+  if ! grep -qE '[[:blank:]]$' "$file" 2>/dev/null; then
+    return
+  fi
+
   # Trim trailing whitespace on every line.
   # Use a platform-safe in-place sed:
   #   macOS sed requires a backup extension; we use '' for no backup.
@@ -90,9 +98,11 @@ for f in "${FILES[@]}"; do
   trim_file "$f"
 done
 
-# ── Optional: log summary to stderr (visible with Ctrl+O in Claude Code) ─────
+# ── Log summary to stderr (visible with Ctrl+O in Claude Code) ───────────────
 if (( TRIMMED > 0 )); then
   echo "[claude-trim] Trimmed trailing whitespace in $TRIMMED file(s)." >&2
+elif (( CHECKED > 0 )); then
+  echo "[claude-trim] Checked $CHECKED file(s) — no trailing whitespace found." >&2
 fi
 if (( SKIPPED > 0 )); then
   echo "[claude-trim] Skipped $SKIPPED file(s) (binary, oversized, or .git)." >&2

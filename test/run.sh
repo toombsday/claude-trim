@@ -49,6 +49,34 @@ rm -f "$TMP1" "$TMP2"
 PAYLOAD='{"tool_name":"Read","tool_input":{"file_path":"/tmp/noop"}}'
 echo "$PAYLOAD" | bash "$SCRIPT_DIR/scripts/trim-file.sh" && pass "non-Write/Edit tool exits 0 cleanly" || fail "non-Write/Edit tool failed"
 
+# ── Test: trim-file.sh honours .claude-trim-disabled flag ───────────────────
+TMP=$(mktemp)
+printf 'trailing spaces   \n' > "$TMP"
+touch .claude-trim-disabled
+PAYLOAD=$(jq -n --arg p "$TMP" '{"tool_name":"Write","tool_input":{"file_path":$p}}')
+echo "$PAYLOAD" | bash "$SCRIPT_DIR/scripts/trim-file.sh"
+rm -f .claude-trim-disabled
+if grep -q ' $' "$TMP"; then
+  pass ".claude-trim-disabled: file left untouched"
+else
+  fail ".claude-trim-disabled: file was trimmed when it should have been skipped"
+fi
+rm -f "$TMP"
+
+# ── Test: trim-file.sh skips binary files ───────────────────────────────────
+TMP=$(mktemp)
+TMP_BACKUP=$(mktemp)
+printf 'binary\x00data   \n' > "$TMP"
+cp "$TMP" "$TMP_BACKUP"
+PAYLOAD=$(jq -n --arg p "$TMP" '{"tool_name":"Write","tool_input":{"file_path":$p}}')
+echo "$PAYLOAD" | bash "$SCRIPT_DIR/scripts/trim-file.sh" 2>/dev/null
+if cmp -s "$TMP" "$TMP_BACKUP"; then
+  pass "binary file skipped (file unchanged)"
+else
+  fail "binary file was modified when it should have been skipped"
+fi
+rm -f "$TMP" "$TMP_BACKUP"
+
 # ── Test: trim-output.sh strips ANSI codes ──────────────────────────────────
 echo ""
 echo "trim-output.sh (pipe mode)"

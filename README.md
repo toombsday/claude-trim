@@ -26,12 +26,18 @@ There are two related problems this plugin addresses:
 
 ### As a Claude Code plugin (recommended)
 
+**From npm** (once published):
 ```bash
-# Inside Claude Code
 /plugin install claude-trim
+```
 
-# Or, install from GitHub directly
-/plugin install github:toombsday/claude-trim
+**From GitHub directly:**
+```bash
+# Step 1: add the repo as a marketplace source (one-time)
+/plugin marketplace add toombsday/claude-trim
+
+# Step 2: install the plugin
+/plugin install claude-trim@toombsday-claude-trim
 ```
 
 ### Local development / testing
@@ -182,7 +188,7 @@ npm publish --access public
 After publishing, users can install via:
 
 ```bash
-/plugin install npm:claude-trim
+/plugin install claude-trim
 ```
 
 ---

@@ -2,46 +2,29 @@
 name: trim
 description: >
   Clean Claude Code output of trailing whitespace and ANSI escape sequences.
-  Use /trim --clipboard to clean your clipboard in-place, or pipe output through
-  the companion script. Addresses the Ink renderer whitespace padding bug
-  (github.com/anthropics/claude-code/issues/23014).
+  Runs the trim-output.sh script directly. Use /trim for clipboard, /trim --dry
+  to preview, or /trim <file> to clean a file in-place.
 ---
 
-# trim
+Run the following bash command based on what the user wants:
 
-Cleans Claude Code TUI output of trailing whitespace, ANSI escape sequences,
-and excessive blank lines.
-
-## Usage
-
+**Clean clipboard (default — most common use):**
 ```bash
-# Clean your clipboard (read, trim, write back)
-${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh --clipboard
-
-# Preview cleaned clipboard without overwriting
-${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh --clipboard --dry
-
-# Pipe claude output through the cleaner
-claude -p "explain grep" | ${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh
-
-# Clean a specific file in-place
-${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh path/to/file.txt
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh --clipboard
 ```
 
-## What it removes
+**Preview clipboard without overwriting:**
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh --clipboard --dry
+```
 
-- Trailing spaces padded to terminal width by the Ink renderer
-- ANSI/VT100 escape codes (`\x1b[...m`, reverse video `\x1b[7m`, etc.)
-- Runs of 3+ consecutive blank lines (collapsed to 2)
+**Clean a specific file in-place:**
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/trim-output.sh <file>
+```
 
-## Why this exists
+If the user typed `/trim` with no arguments, run the clipboard command.
+If they typed `/trim --dry`, run the clipboard dry-run command.
+If they typed `/trim <filename>`, run the file command with that filename.
 
-Claude Code's TUI uses the Ink renderer which pads every screen line with
-actual space characters to the terminal width. This means selected+copied
-text contains hundreds of invisible trailing spaces per line, making it
-painful to paste into editors, SSH sessions, or scripts.
-
-This is a tracked upstream bug. This plugin is a workaround until it's fixed
-in Claude Code itself.
-
-**Reference:** https://github.com/anthropics/claude-code/issues/23014
+After running, confirm what was done in one sentence.

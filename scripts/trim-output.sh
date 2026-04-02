@@ -56,6 +56,7 @@ clean_text() {
     -e 's/\x1b\[[0-9;]*[mGKHFABCDJhlisusr]//g' \
     -e 's/\x1b\[[0-9;]*m//g' \
     -e 's/\x1b(B//g' \
+    -e 's/\x1b][^\x07]*\x07//g' \
     -e 's/[[:space:]]*$//' \
   | awk '
     /^$/ { blank++; if (blank <= 2) print; next }
@@ -106,11 +107,11 @@ if [[ -n "$FILE_ARG" ]]; then
     echo "[claude-trim] File not found: $FILE_ARG" >&2
     exit 1
   fi
-  CLEANED=$(clean_text < "$FILE_ARG")
   if $DRY_RUN; then
-    echo "$CLEANED"
+    clean_text < "$FILE_ARG"
   else
-    echo "$CLEANED" > "$FILE_ARG"
+    TMPFILE=$(mktemp)
+    clean_text < "$FILE_ARG" > "$TMPFILE" && mv "$TMPFILE" "$FILE_ARG"
     echo "[claude-trim] Cleaned: $FILE_ARG" >&2
   fi
 

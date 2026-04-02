@@ -23,7 +23,7 @@ printf 'hello world   \nno trailing\n  indented   \n' > "$TMP"
 PAYLOAD=$(jq -n --arg p "$TMP" '{"tool_name":"Write","tool_input":{"file_path":$p}}')
 echo "$PAYLOAD" | bash "$SCRIPT_DIR/scripts/trim-file.sh"
 
-if grep -qP ' $' "$TMP"; then
+if grep -q ' $' "$TMP"; then
   fail "trailing spaces were NOT removed"
 else
   pass "trailing spaces removed from Write output"
@@ -38,7 +38,7 @@ PAYLOAD=$(jq -n --arg p1 "$TMP1" --arg p2 "$TMP2" \
   '{"tool_name":"MultiEdit","tool_input":{"edits":[{"file_path":$p1},{"file_path":$p2}]}}')
 echo "$PAYLOAD" | bash "$SCRIPT_DIR/scripts/trim-file.sh"
 
-if grep -qP ' $' "$TMP1" || grep -qP ' $' "$TMP2"; then
+if grep -q ' $' "$TMP1" || grep -q ' $' "$TMP2"; then
   fail "MultiEdit: trailing spaces NOT removed from one or more files"
 else
   pass "MultiEdit: trailing spaces removed from both files"

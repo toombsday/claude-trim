@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Local Claude Code settings (not for version control)
+.claude/settings.local.json
+
+# Temp / test artifacts
+*.tmp

@@ -31,18 +31,18 @@ There are two related problems this plugin addresses:
 /plugin install claude-trim
 
 # Or, install from GitHub directly
-/plugin install github:yourusername/claude-trim
+/plugin install github:toombsday/claude-trim
 ```
 
 ### Local development / testing
 
 ```bash
-git clone https://github.com/yourusername/claude-trim.git
+git clone https://github.com/toombsday/claude-trim.git
 cd claude-trim
 chmod +x scripts/*.sh
 
-# Start Claude Code with the plugin loaded
-claude --plugin-dir ./claude-trim
+# Start Claude Code with the plugin loaded from the current directory
+claude --plugin-dir .
 ```
 
 ### Symlink the cleaner script to your PATH (optional but handy)
@@ -154,17 +154,18 @@ echo -e "hello\x1b[7m world \x1b[27m   " | bash scripts/trim-output.sh
 ```
 claude-trim/
 ├── .claude-plugin/
-│   └── plugin.json       # Plugin manifest
+│   └── plugin.json       # Plugin manifest (name, version, hooks, commands)
 ├── hooks/
-│   └── hooks.json        # PostToolUse hook config
+│   └── hooks.json        # PostToolUse hook registration
 ├── commands/
-│   └── trim.md           # /trim slash command
+│   └── trim.md           # /trim slash command definition
 ├── scripts/
-│   ├── trim-file.sh      # Hook script (strips whitespace from files)
+│   ├── trim-file.sh      # Hook script: strips whitespace from written files
 │   └── trim-output.sh    # Standalone clipboard/pipe cleaner
 ├── test/
-│   └── run.sh            # Test suite
-├── package.json
+│   └── run.sh            # Test suite (bash test/run.sh)
+├── package.json          # npm package manifest
+├── .npmignore            # Excludes test/ and dev files from npm publish
 ├── LICENSE
 └── README.md
 ```
@@ -207,4 +208,4 @@ Areas that would improve this plugin:
 
 ## License
 
-MIT © Your Name
+MIT © toombsday

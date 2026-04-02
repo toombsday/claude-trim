@@ -15,6 +15,9 @@ set -euo pipefail
 # ── Read stdin ──────────────────────────────────────────────────────────────
 INPUT=$(cat)
 
+# ── Honour the disable flag ──────────────────────────────────────────────────
+[[ -f ".claude-trim-disabled" ]] && exit 0
+
 # ── Extract file paths from the tool input ───────────────────────────────────
 # Write/Edit provide tool_input.file_path; MultiEdit provides tool_input.edits[].file_path
 TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""')
@@ -25,7 +28,10 @@ case "$TOOL" in
     FILES=("$FILE_PATH")
     ;;
   MultiEdit)
-    mapfile -t FILES < <(echo "$INPUT" | jq -r '.tool_input.edits[].file_path // empty')
+    FILES=()
+    while IFS= read -r line; do
+      FILES+=("$line")
+    done < <(echo "$INPUT" | jq -r '.tool_input.edits[].file_path // empty' | sort -u)
     ;;
   *)
     exit 0
@@ -59,8 +65,8 @@ trim_file() {
     return
   fi
 
-  # Guard: skip binary files (look for null bytes in first 8 KB)
-  if LC_ALL=C grep -qP '\x00' <(head -c 8192 "$file") 2>/dev/null; then
+  # Guard: skip binary files (check via file command)
+  if ! file "$file" 2>/dev/null | grep -q "text"; then
     ((SKIPPED++)) || true
     return
   fi
@@ -69,7 +75,7 @@ trim_file() {
   # Use a platform-safe in-place sed:
   #   macOS sed requires a backup extension; we use '' for no backup.
   #   GNU sed accepts -i without an argument.
-  if sed --version &>/dev/null 2>&1; then
+  if sed --version &>/dev/null; then
     # GNU sed
     sed -i 's/[[:space:]]*$//' "$file"
   else

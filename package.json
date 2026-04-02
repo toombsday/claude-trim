@@ -12,16 +12,16 @@
     "formatting",
     "hooks"
   ],
-  "homepage": "https://github.com/yourusername/claude-trim#readme",
+  "homepage": "https://github.com/toombsday/claude-trim#readme",
   "bugs": {
-    "url": "https://github.com/yourusername/claude-trim/issues"
+    "url": "https://github.com/toombsday/claude-trim/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/claude-trim.git"
+    "url": "git+https://github.com/toombsday/claude-trim.git"
   },
   "license": "MIT",
-  "author": "Your Name <you@example.com>",
+  "author": "toombsday",
   "files": [
     ".claude-plugin/",
     "hooks/",
